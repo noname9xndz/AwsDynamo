@@ -2,12 +2,15 @@
 
 Step 1 : CreateTable
 
+```
 public class Product : DomainEntity<string>
 {
     public const string tableName = "dbo_Product";
 
     public string Name { set; get; }
 }
+
+```
 
 Step 2 : Create repository
 
