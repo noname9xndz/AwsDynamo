@@ -14,18 +14,23 @@ public class Product : DomainEntity<string>
 
 Step 2 : Create repository
 
-public interface ITestRepository : IGenericRepository<Test, string>
- {
 
- }
+```
+public interface ITestRepository : IGenericRepository<Test, string>
+{
+
+}
+ 
 public class TestRepository : GenericRepository<Test, string>, ITestRepository
 {
   public TestRepository(IAmazonDynamoDB client) : base(client)
   {
   }
 }
+```
 Step 3 : Add AWS Config
 
+```
  "AWS": {
     "Profile": "",
     "Region": "",
@@ -34,8 +39,10 @@ Step 3 : Add AWS Config
     "BucketName": ""
   }
 
+```
 Step 4 : Register Service and Register Application
 
+```
  public void ConfigureServices(IServiceCollection services)
  {
       services.AddDefaultAWSOptions(DynamoHelper.GetAwsOptions(configuration));
@@ -48,15 +55,16 @@ Step 4 : Register Service and Register Application
       services.AddScoped<ITestRepository, TestRepository>();
  }
 
-
- public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
 {
       var testDbInitializer = serviceProvider.GetService<IDynamoDbInitializer<Test, string>>();
       testDbInitializer.EnsureCreatedAsync().Wait();
 }
 
+```
 Step 5 : Using 
 
+```
 public class TestController : Controller
 {
      private readonly ITestRepository _testRepository;
@@ -65,3 +73,4 @@ public class TestController : Controller
          _testRepository = testRepository
      }
 }
+```
